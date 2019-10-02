@@ -1,11 +1,22 @@
 import hashlib
 import requests
-
+import json
 import sys
 
 ## Find a way to request the last_block from the server using the requests library
 # TODO: Implement functionality to search for a proof 
+def proof_of_work(block):
+    block_string = json.dumps(block, sort_keys=True).encode()
+    proof = 0
+    while valid_proof(block_string, proof) is False:
+        proof += 1
 
+    return print(proof)
+
+def valid_proof(block_string, proof):
+    guess = f'{block_string}{proof}'.encode()
+    guess_hash = hashlib.sha256(guess).hexdigest()
+    return guess_hash[:3] == "000"
 
 if __name__ == '__main__':
     # What node are we interacting with?
@@ -16,7 +27,7 @@ if __name__ == '__main__':
 
     coins_mined = 0
     # Run forever until interrupted
-    #while True:
+   
         # TODO: Get the last proof from the server and look for a new one
         # TODO: When found, POST it to the server {"proof": new_proof}
         # TODO: We're going to have to research how to do a POST in Python
@@ -25,5 +36,7 @@ if __name__ == '__main__':
         # add 1 to the number of coins mined and print it.  Otherwise,
         # print the message from the server.
     #   pass
-    response = requests.get('http://127.0.0.1:5000/chain')
-    print(response.status_code)
+    response = requests.get('http://127.0.0.1:5000/last_block')
+    block = response.json()
+    proof = proof_of_work(block['last-block'])        
+    

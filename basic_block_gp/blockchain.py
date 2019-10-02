@@ -92,6 +92,7 @@ class Blockchain(object):
         zeroes
         :return: A valid proof for the provided block
         """
+        print(block)
         block_string = json.dumps(block, sort_keys=True).encode()
 
         proof = 0
