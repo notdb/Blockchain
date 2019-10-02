@@ -3,7 +3,7 @@ import requests
 
 import sys
 
-
+## Find a way to request the last_block from the server using the requests library
 # TODO: Implement functionality to search for a proof 
 
 
@@ -12,11 +12,11 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         node = sys.argv[1]
     else:
-        node = "http://localhost:5000"
+        node = "http://127.0.0.1:5000"
 
     coins_mined = 0
     # Run forever until interrupted
-    while True:
+    #while True:
         # TODO: Get the last proof from the server and look for a new one
         # TODO: When found, POST it to the server {"proof": new_proof}
         # TODO: We're going to have to research how to do a POST in Python
@@ -24,4 +24,6 @@ if __name__ == '__main__':
         # TODO: If the server responds with 'New Block Forged'
         # add 1 to the number of coins mined and print it.  Otherwise,
         # print the message from the server.
-        pass
+    #   pass
+    response = requests.get('http://127.0.0.1:5000/chain')
+    print(response.status_code)
