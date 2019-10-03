@@ -169,7 +169,7 @@ def mine():
     data = request.json
     print(f'{data} AAAAAAAAAA')
     proof = blockchain.proof_of_work(blockchain.last_block)
-
+    print(data['proof'])
     # We must receive a reward for finding the proof.
     # TODO:
     # The sender is "0" to signify that this node has mine a new coin
@@ -177,12 +177,12 @@ def mine():
     # The amount is 1 coin as a reward for mining the next block
     blockchain.new_transaction(
         sender="0",
-        recipient=node_identifier,
+        recipient=data['id'],
         amount=1,
         )
     # Forge the new Block by adding it to the chain
     previous_hash = blockchain.hash(blockchain.last_block)
-    block = blockchain.new_block(data, previous_hash)
+    block = blockchain.new_block(data['proof'], previous_hash)
 
     # Send a response with the new block
     response = {
