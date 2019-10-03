@@ -11,7 +11,7 @@ def proof_of_work(block):
     while valid_proof(block_string, proof) is False:
         proof += 1
 
-    return print(proof)
+    return proof
 
 def valid_proof(block_string, proof):
     guess = f'{block_string}{proof}'.encode()
@@ -38,5 +38,10 @@ if __name__ == '__main__':
     #   pass
     response = requests.get('http://127.0.0.1:5000/last_block')
     block = response.json()
-    proof = proof_of_work(block['last-block'])        
-    
+    proof = proof_of_work(block['last-block'])
+    print(proof)
+    coins_mined += 1
+    print(proof)
+    sendblock = requests.post('http://127.0.0.1:5000/mine', json=proof)
+    print(f'{sendblock.url} AAAAA')
+    print(f'{sendblock} bbbbbbbbb')

@@ -92,7 +92,7 @@ class Blockchain(object):
         zeroes
         :return: A valid proof for the provided block
         """
-        print(block)
+        
         block_string = json.dumps(block, sort_keys=True).encode()
 
         proof = 0
@@ -162,9 +162,12 @@ node_identifier = str(uuid4()).replace('-', '')
 blockchain = Blockchain()
 
 
-@app.route('/mine', methods=['GET'])
+@app.route('/mine', methods=['GET', 'POST'])
 def mine():
     # We run the proof of work algorithm to get the next proof...
+    
+    data = request.json
+    print(f'{data} AAAAAAAAAA')
     proof = blockchain.proof_of_work(blockchain.last_block)
 
     # We must receive a reward for finding the proof.
@@ -179,7 +182,7 @@ def mine():
         )
     # Forge the new Block by adding it to the chain
     previous_hash = blockchain.hash(blockchain.last_block)
-    block = blockchain.new_block(proof, previous_hash)
+    block = blockchain.new_block(data, previous_hash)
 
     # Send a response with the new block
     response = {
